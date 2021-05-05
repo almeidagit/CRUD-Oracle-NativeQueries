@@ -90,9 +90,9 @@ public class App {
 				for (Funcionario func : listaFuncionarios) {
 					System.out.println(" CPF: " + func.getCpf() + " NOME: " + func.getNome());
 
-//					for (ItensCafe item : func.getListItensCafe()) {
-//						System.out.println(" ITEM: " + item.getItem_cafe());
-//					}
+					for (ItensCafe item : func.getListItensCafe()) {
+						System.out.println(" ITEM: " + item.getItem_cafe());
+					}
 
 				}
 

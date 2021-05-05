@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
-//import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import entidade.Funcionario;
@@ -13,14 +12,14 @@ import util.JpaUtil;
 
 public class FuncioanrioDAOImpl implements FuncionarioDAO {
 
-	EntityManager em = JpaUtil.getEntityManager();
-	EntityTransaction tx = em.getTransaction();
 	
 
 	@Override
 	public void inserir(Funcionario funcionario) {
 
-		tx = em.getTransaction();
+		EntityManager em = JpaUtil.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		
 		tx.begin();
 
 		String nativeQueryInserir = "INSERT INTO FUNCIONARIO VALUES (:a, :b)";
@@ -31,13 +30,15 @@ public class FuncioanrioDAOImpl implements FuncionarioDAO {
 		query.setParameter("b", funcionario.getNome()).executeUpdate();
 
 		tx.commit();
-		//JpaUtil.close();
+		em.close(); 
 	}
 
 	@Override
 	public void remover(String cpf) {
 
-		tx = em.getTransaction();
+		EntityManager em = JpaUtil.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		
 		tx.begin();
 
 		String nativeQueryRemoveItem = "DELETE ITENS_CAFE WHERE CPF_FUNC = ?";
@@ -50,25 +51,30 @@ public class FuncioanrioDAOImpl implements FuncionarioDAO {
 		query2.setParameter(1, cpf).executeUpdate();
 
 		tx.commit();
-		//JpaUtil.close();
+		em.close(); 
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Funcionario> listarTodos() {
-
+		
+		EntityManager em = JpaUtil.getEntityManager();
+		
 		String nativeQuery = "SELECT * from funcionario";
 		Query query = em.createNativeQuery(nativeQuery, Funcionario.class);
 
 		List<Funcionario> funcionarios = query.getResultList();
 
+		em.close(); 
 		return funcionarios;
 	}
 
 	@Override
 	public void inserirCafe(int i, String itemcafe, String cpf) {
 		
-		tx = em.getTransaction();
+		EntityManager em = JpaUtil.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		
 		tx.begin();
 
 		String nativeQueryInserir = "INSERT INTO ITENS_CAFE (ID_ITEM, ITEM_CAFE, CPF_FUNC) VALUES (:a, :b, :c)";
@@ -79,17 +85,16 @@ public class FuncioanrioDAOImpl implements FuncionarioDAO {
 		query.setParameter("c", cpf).executeUpdate();
 
 		tx.commit();
-		
-		
-		//JpaUtil.close();
-		
+		em.close(); 
 
 	}
 
 	@Override
 	public void removerCafe(String cafe) {
 
-		tx = em.getTransaction();
+		EntityManager em = JpaUtil.getEntityManager();
+		EntityTransaction tx = em.getTransaction();
+		
 		tx.begin();
 
 		String nativeQueryRemoveItem = "DELETE ITENS_CAFE WHERE ITEM_CAFE = ?";
@@ -99,13 +104,14 @@ public class FuncioanrioDAOImpl implements FuncionarioDAO {
 		query.setParameter(1, cafe).executeUpdate();
 
 		tx.commit();
-		//JpaUtil.close();
+		em.close(); 
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ItensCafe> listarTodosItens() {
-		// em.clear();
+		
+		EntityManager em = JpaUtil.getEntityManager();
 
 		String nativeQuery = "SELECT * from ITENS_CAFE order by cpf_func";
 
@@ -113,7 +119,7 @@ public class FuncioanrioDAOImpl implements FuncionarioDAO {
 
 		List<ItensCafe> itenscafe = query.getResultList();
 
-		// JpaUtil.close();
+		em.close(); 
 		return itenscafe;
 	}
 
